@@ -48,7 +48,7 @@ BBOX = [min(lons), min(lats), max(lons), max(lats)]  # [west, south, east, north
 
 # Titulo
 st.title("\U0001F30D Geovisor Finca Olga")
-st.markdown("Visualizador de imagenes satelitales Sentinel-2")
+st.markdown("Visualizador de imagenes satelitales Sentinel-2 para Finca Olga, Costa Rica")
 
 # --- Sidebar ---
 st.sidebar.header("Parametros de busqueda")
