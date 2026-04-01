@@ -8,7 +8,7 @@ sdk_version: 1.55.0
 app_file: app.py
 pinned: false
 license: mit
-short_description: Sentinel-2 satellite imagery viewer for Finca Olga, Costa Rica
+short_description: Sentinel-2 imagery viewer for Finca Olga
 ---
 
 # Geovisor Finca Olga
