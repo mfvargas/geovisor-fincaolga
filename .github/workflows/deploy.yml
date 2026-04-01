@@ -13,6 +13,6 @@ jobs:
           fetch-depth: 0
 
       - run: |
-          git push --force https://mfvargas:$HF_TOKEN@huggingface.co/spaces/mfvargas/geovisor-fincaolga main
+          git push https://mfvargas:$HF_TOKEN@huggingface.co/spaces/mfvargas/geovisor-fincaolga main
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
