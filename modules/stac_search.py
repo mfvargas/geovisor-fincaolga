@@ -53,6 +53,7 @@ def search_sentinel2(bbox, date_start, date_end, max_cloud_cover=30, max_items=5
             "id": item.id,
             "datetime": item.properties.get("datetime", ""),
             "cloud_cover": cloud_cover,
+            "platform": item.properties.get("platform", ""),
             "assets": assets,
             "thumbnail": thumbnail.href if thumbnail else None,
         })

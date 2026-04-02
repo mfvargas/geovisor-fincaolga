@@ -6,6 +6,7 @@ from datetime import date, timedelta
 
 import streamlit as st
 import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
 from streamlit_folium import st_folium
 
@@ -83,6 +84,14 @@ st.sidebar.markdown(f"**{len(results)} imagenes encontradas**")
 image_labels = [
     f"{r['datetime'][:10]} | Nub: {r['cloud_cover']:.1f}%" for r in results
 ]
+
+with st.sidebar.expander("Ver tabla de resultados"):
+    df = pd.DataFrame({
+        "Fecha": [r["datetime"][:10] for r in results],
+        "Nub (%)": [round(r["cloud_cover"], 1) for r in results],
+        "Satelite": [r.get("platform", "").replace("sentinel-", "S") for r in results],
+    })
+    st.dataframe(df, hide_index=True, use_container_width=True)
 
 # Modo de visualizacion
 st.sidebar.markdown("---")
