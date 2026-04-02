@@ -24,8 +24,10 @@ def create_base_map(bbox, zoom_start=14):
     m = folium.Map(
         location=_bbox_center(bbox),
         zoom_start=zoom_start,
-        tiles="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-        attr="Esri World Imagery",
+        max_zoom=22,
+        tiles="https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}",
+        attr="Google Satellite",
+        max_native_zoom=22,
     )
     # Capa de etiquetas
     folium.TileLayer(
@@ -97,7 +99,7 @@ def create_split_map(image_left, image_right, bbox, label_left="Fecha 1", label_
     bounds = _bbox_to_bounds(bbox)
     center = _bbox_center(bbox)
 
-    m = DualMap(location=center, zoom_start=14)
+    m = DualMap(location=center, zoom_start=14, max_zoom=21)
 
     # Panel izquierdo
     png_left = array_to_png_base64(image_left)
