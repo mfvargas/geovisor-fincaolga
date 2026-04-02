@@ -3,10 +3,32 @@
 import json
 
 import folium
-from folium.plugins import DualMap
+from folium.plugins import DualMap, MousePosition
 from folium.raster_layers import ImageOverlay
+from jinja2 import Template
 
 from modules.imagery import array_to_png_base64
+
+
+# Indicador de zoom: muestra el nivel actual en la esquina inferior derecha
+_ZOOM_INDICATOR = folium.MacroElement()
+_ZOOM_INDICATOR._template = Template("""
+{% macro script(this, kwargs) %}
+    var zoomDiv = L.DomUtil.create('div', 'leaflet-control');
+    zoomDiv.style.cssText = 'background:rgba(255,255,255,0.8);padding:2px 6px;font:12px monospace;border-radius:3px;';
+    zoomDiv.innerHTML = 'Zoom: ' + {{this._parent.get_name()}}.getZoom();
+    var ZoomControl = L.Control.extend({
+        options: {position: 'bottomright'},
+        onAdd: function(map) {
+            map.on('zoomend', function() {
+                zoomDiv.innerHTML = 'Zoom: ' + map.getZoom();
+            });
+            return zoomDiv;
+        }
+    });
+    {{this._parent.get_name()}}.addControl(new ZoomControl());
+{% endmacro %}
+""")
 
 
 def _bbox_to_bounds(bbox):
@@ -19,12 +41,27 @@ def _bbox_center(bbox):
     return [(bbox[1] + bbox[3]) / 2, (bbox[0] + bbox[2]) / 2]
 
 
+def _add_map_controls(m):
+    """Agrega controles de coordenadas y zoom a un mapa folium."""
+    MousePosition(
+        position="bottomleft",
+        separator=" | ",
+        prefix="Lat/Lon:",
+        num_digits=5,
+    ).add_to(m)
+
+    zoom_indicator = folium.MacroElement()
+    zoom_indicator._template = _ZOOM_INDICATOR._template
+    m.add_child(zoom_indicator)
+
+
 def create_base_map(bbox, zoom_start=15):
     """Crea un mapa folium centrado en el bbox con basemap satelital."""
     m = folium.Map(
         location=_bbox_center(bbox),
         zoom_start=zoom_start,
         max_zoom=22,
+        control_scale=True,
         tiles="https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}",
         attr="Google Satellite",
         max_native_zoom=22,
@@ -37,6 +74,7 @@ def create_base_map(bbox, zoom_start=15):
         overlay=True,
         control=False,
     ).add_to(m)
+    _add_map_controls(m)
     return m
 
 
@@ -99,7 +137,8 @@ def create_split_map(image_left, image_right, bbox, label_left="Fecha 1", label_
     bounds = _bbox_to_bounds(bbox)
     center = _bbox_center(bbox)
 
-    m = DualMap(location=center, zoom_start=15, max_zoom=22)
+    m = DualMap(location=center, zoom_start=15, max_zoom=22, control_scale=True)
+    _add_map_controls(m.m1)
 
     # Panel izquierdo
     png_left = array_to_png_base64(image_left)
