@@ -19,7 +19,7 @@ def _bbox_center(bbox):
     return [(bbox[1] + bbox[3]) / 2, (bbox[0] + bbox[2]) / 2]
 
 
-def create_base_map(bbox, zoom_start=14):
+def create_base_map(bbox, zoom_start=15):
     """Crea un mapa folium centrado en el bbox con basemap satelital."""
     m = folium.Map(
         location=_bbox_center(bbox),
@@ -99,7 +99,7 @@ def create_split_map(image_left, image_right, bbox, label_left="Fecha 1", label_
     bounds = _bbox_to_bounds(bbox)
     center = _bbox_center(bbox)
 
-    m = DualMap(location=center, zoom_start=14, max_zoom=21)
+    m = DualMap(location=center, zoom_start=15, max_zoom=22)
 
     # Panel izquierdo
     png_left = array_to_png_base64(image_left)
