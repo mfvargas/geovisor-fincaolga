@@ -13,7 +13,7 @@ Geovisor Finca Olga: aplicacion Streamlit para visualizar imagenes satelitales S
 ## Arquitectura
 
 - `app.py` — punto de entrada Streamlit, define la UI y conecta los modulos
-- `modules/stac_search.py` — busqueda de imagenes Sentinel-2 L2A via Element84 Earth Search STAC API (sin autenticacion)
+- `modules/stac_search.py` — busqueda de imagenes Sentinel-2 L2A via Element84 Earth Search STAC API (sin autenticacion). Retorna id, datetime, cloud_cover, platform, assets y thumbnail
 - `modules/imagery.py` — lectura de COGs remotos con rasterio (lectura por ventana con reproyeccion de bbox a UTM), composiciones de bandas (true color, false color, NDVI)
 - `modules/map_display.py` — mapas folium con ImageOverlay y DualMap para comparacion
 - `modules/change_detection.py` — diferencia de NDVI entre dos fechas, clasificacion de cambios
