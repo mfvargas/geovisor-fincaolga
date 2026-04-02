@@ -46,12 +46,8 @@ lons = [c[0] for c in coords]
 lats = [c[1] for c in coords]
 BBOX = [min(lons), min(lats), max(lons), max(lats)]  # [west, south, east, north]
 
-# Titulo
-st.title("\U0001F30D Geovisor Finca Olga")
-st.markdown("Visualizador de imagenes satelitales Sentinel-2 para Finca Olga, Costa Rica")
-
 # --- Sidebar ---
-st.sidebar.header("Parametros de busqueda")
+st.sidebar.title("\U0001F30D Geovisor Finca Olga")
 
 # Rango de fechas
 today = date.today()
